@@ -6,7 +6,7 @@ class uniqueUrl(models.Model):
         return self.name
 
 class UrlEntry(models.Model):
-        origin_url= models.ForeignKey(uniqueUrl,on_delete=models.PROTECT)
+       # origin_url= models.ForeignKey(uniqueUrl,on_delete=models.PROTECT)
         friendly_name= models.CharField(max_length=128)
         short_url= models.URLField()
         origin_domain = models.URLField()

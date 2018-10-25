@@ -33,7 +33,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class UrlSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
          model = UrlEntry
-         fields =('short_url','friendly_name','origin_domain','origin_ip')
+         fields =('origin_domain','short_url')
 
 class UserViewSet (viewsets.ModelViewSet):
     queryset = User.objects.all()
