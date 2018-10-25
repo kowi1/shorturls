@@ -33,7 +33,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class UrlSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
          model = UrlEntry
-         fields =('origin_domain','short_url')
+         fields =('origin_domain','short_url','friendly_name')
 
 class UserViewSet (viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -46,6 +46,7 @@ class UrlViewSet (viewsets.ModelViewSet):
 router = routers.DefaultRouter()
 router.register(r'users',UserViewSet)
 router.register(r'url',UrlViewSet)
+
 print(base62.from_decimal(12345))
 
 urlpatterns = [
