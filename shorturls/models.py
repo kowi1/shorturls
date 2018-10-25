@@ -1,7 +1,7 @@
 from django.db.models import Model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from shorturls.validators import FriendValidator
+from .validators import FriendValidator
 
 friendlyname_validator=FriendValidator
 
