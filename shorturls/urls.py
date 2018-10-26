@@ -16,36 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import url,include
-from django.contrib.auth.models import User
-from shorturls.models import UrlEntry
-from rest_framework import routers, serializers, viewsets
+
 from shorturls.baseconv import base62
+from shorturls.routers import router
 
-
-
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-         model = User
-         fields =('url','username','email','is_staff')
-
-
-
-class UrlSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-         model = UrlEntry
-         fields =('origin_domain','short_url','friendly_name')
-
-class UserViewSet (viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer 
-
-class UrlViewSet (viewsets.ModelViewSet):
-    queryset = UrlEntry.objects.all()
-    serializer_class = UrlSerializer 
-
-router = routers.DefaultRouter()
-router.register(r'users',UserViewSet)
-router.register(r'url',UrlViewSet)
 
 print(base62.from_decimal(12345))
 
