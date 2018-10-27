@@ -4,14 +4,21 @@ from shorturls.models import UrlEntry
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-
          model = User
-         fields =('url','username','email','is_staff')
-         context={'request': request}
+         fields =('url','username','email','is_staff','password')
+        
 
-
-
-class UrlSerializer(serializers.HyperlinkedModelSerializer):
+class RediretUrlSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
          model = UrlEntry
          fields =('origin_domain','short_url','friendly_name')
+
+class GetShortUrlSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+         model = UrlEntry
+         fields =('origin_domain','short_url')
+         
+class GetFriendlyNameSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+         model = UrlEntry
+         fields =('friendly_name')

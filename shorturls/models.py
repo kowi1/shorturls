@@ -22,7 +22,7 @@ class UrlEntry(models.Model):
         short_url= models.URLField()
         origin_domain = models.URLField()
         views = models.IntegerField(default=0)
-        origin_ip = models.IntegerField(default=0)
+        origin_ip = models.CharField(max_length=128)
         
         def __unicode__(self):
             return self.title
