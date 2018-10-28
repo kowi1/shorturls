@@ -5,13 +5,9 @@ from .validators import FriendValidator
 
 friendlyname_validator=FriendValidator
 
-class uniqueUrl(models.Model):
-    name = models.CharField(max_length=128, unique=True)
-    def __unicode__(self):
-        return self.name
 
 class UrlEntry(models.Model):
-       # origin_url= models.ForeignKey(uniqueUrl,on_delete=models.PROTECT)
+        #auto_increment_id=models.AutoField(primary_key=True,default=1,unique=True)
         friendly_name= models.CharField(max_length=128,
         help_text=_('Type in a friendly name you would like to use and we will check if it is available'),
         validators=[friendlyname_validator],

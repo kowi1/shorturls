@@ -19,6 +19,7 @@ from django.conf.urls import url,include
 
 from shorturls.baseconv import base62
 from shorturls.routers import router
+from shorturls.viewset import EntryViewSet
 
 
 print(base62.from_decimal(12345))

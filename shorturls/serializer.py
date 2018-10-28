@@ -8,16 +8,21 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
          fields =('url','username','email','is_staff','password')
         
 
-class RediretUrlSerializer(serializers.HyperlinkedModelSerializer):
+class RedirectUrlSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
          model = UrlEntry
          fields =('origin_domain','short_url','friendly_name')
+         
+class FullEntrySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+         model = UrlEntry
+         fields =('id','origin_domain','short_url','friendly_name','origin_ip','views')
 
 class GetShortUrlSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
          model = UrlEntry
-         fields =('origin_domain')
-         
+         fields =('origin_domain','short_url')
+
 class GetFriendlyNameSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
          model = UrlEntry
