@@ -16,9 +16,9 @@ class RediretUrlSerializer(serializers.HyperlinkedModelSerializer):
 class GetShortUrlSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
          model = UrlEntry
-         fields =('origin_domain','short_url')
+         fields =('origin_domain')
          
 class GetFriendlyNameSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
          model = UrlEntry
-         fields =('friendly_name')
+         fields =('origin_domain','friendly_name')

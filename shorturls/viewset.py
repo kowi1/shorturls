@@ -16,7 +16,6 @@ class UserInputViewSet (viewsets.ModelViewSet):
 
 class UserViewSet (viewsets.ViewSet):
      
-
      def list(self,request):
         queryset = User.objects.all()
         serializer = UserSerializer(queryset, many=True,context={'request':request})
@@ -32,10 +31,12 @@ class UserViewSet (viewsets.ViewSet):
         context = super(UserViewSet,self).get_serializer_context()
         return context
      
-      
 
 class GetShortUrlViewSet (viewsets.ViewSet):
-     
+
+         queryset = UrlEntry.objects.all()
+         serializer_class=GetShortUrlSerializer
+         permission_classes=(permissions.IsAuthenticatedOrReadOnly,)
 
      def list(self,request):
          queryset = UrlEntry.objects.all()
@@ -47,14 +48,9 @@ class GetShortUrlViewSet (viewsets.ViewSet):
          user = get_object_or_404(queryset,pk=pk)
          serializer = GetShortUrlSerializer(user,context={'request':request})
          return Response(serializer.data)
-
      
-
-
 
 class GetFriendlyNameViewSet (viewsets.ViewSet):
-     
-
      def list(self,request):
          queryset = UrlEntry.objects.all()
          serializer = GetFriendlyNameSerializer(queryset, many=True,context={'request':request})
