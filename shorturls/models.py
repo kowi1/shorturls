@@ -15,10 +15,11 @@ class UrlEntry(models.Model):
             'unique': _("This friendly name is unavailabe.")
         }
         )
-        short_url= models.URLField()
+        short_url= models.CharField(max_length=128)
         origin_domain = models.URLField()
         views = models.IntegerField(default=0)
         origin_ip = models.CharField(max_length=128)
+        friendly_key= models.IntegerField(default=0)
         
         def __unicode__(self):
             return self.title

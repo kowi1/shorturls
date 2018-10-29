@@ -8,42 +8,23 @@ from rest_framework.decorators import action
 from rest_framework import permissions
 from django.http import HttpResponse,HttpResponseRedirect
 from shorturls.baseconv import base62
+from shorturls.settings import domain
 from urllib.parse import urlparse
 import os
 
-from shorturls.serializer import UserSerializer,GetShortUrlSerializer,FullEntrySerializer,GetFriendlyNameSerializer
+from shorturls.serializer import GetShortUrlSerializer,FullEntrySerializer,GetFriendlyNameSerializer
 
-class UserInputViewSet (viewsets.ModelViewSet):
-        queryset = User.objects.none()
-        serializer_class = UserSerializer
-
-class UserViewSet (viewsets.ViewSet):
-     
-     def list(self,request):
-        queryset = User.objects.none()
-        serializer = UserSerializer(queryset, many=True,context={'request':request})
-        return Response(serializer.data)
-
-     def retrieve(self,request,pk=None):
-        queryset = User.objects.all()
-        user = get_object_or_404(queryset,pk=pk)
-        serializer = UserSerializer(user,context={'request':request})
-        return Response(serializer.data)
-
-     def get_serializer_context(self):
-        context = super(UserViewSet,self).get_serializer_context()
-        return context
      
 class GetShortUrlViewSet(viewsets.ModelViewSet):
          queryset = UrlEntry.objects.none()
          serializer_class=GetShortUrlSerializer
-         
-         
-         def perform_create(self,serializer):
-                 serializer.partial=True
-                 serializer.save( short_url=base62.from_decimal(236))
+        
+         def create(self,request):
+                 queryset=UrlEntry.objects.create(origin_domain=self.request.POST.get('origin_domain'))
+                 serializer = GetShortUrlSerializer(queryset,context={'request':request})
+                 g=UrlEntry.objects.filter(pk=queryset.pk).update(short_url=domain+base62.from_decimal(queryset.pk))
+                 queryset.refresh_from_db()
                  return Response(serializer.data)
-
                  
 class ViewUrlViewSet (viewsets.ViewSet):         
          def list(self,request):
@@ -58,32 +39,24 @@ class ViewUrlViewSet (viewsets.ViewSet):
                  return Response(serializer.data)
      
 
-class GetFriendlyNameViewSet (viewsets.ViewSet):
-     def list(self,request):
+class GetFriendlyNameViewSet (viewsets.ModelViewSet):
          queryset = UrlEntry.objects.all()
-         serializer = GetFriendlyNameSerializer(queryset, many=True,context={'request':request})
-         return Response(serializer.data)
-        
-     def retrieve(self,request,pk=None):
-         queryset = UrlEntry.objects.all()
-         user = get_object_or_404(queryset,pk=pk)
-         serializer = GetFriendlyNameSerializer(user,context={'request':request})
-         return Response(serializer.data)
+         serializer_class=GetFriendlyNameSerializer
+         lookup_field = 'friendly_key'
+         
+         def perform_create(self,serializer):
+                # short=self.request.POST.get('friendly_name')
+                 #print(short)
+                 #g=UrlEntry.objects.filter(friendly_name=short).values('friendly_name')
+                # print(g)
+                 serializer.partial=True
+                 serializer.save( friendly_key=base62.to_decimal(self.request.POST.get('friendly_name')))
+                 return Response(serializer.data)
+
 
 class EntryViewSet(viewsets.ModelViewSet):
-         queryset = UrlEntry.objects.none()
+         queryset = UrlEntry.objects.all()
          serializer_class=GetShortUrlSerializer
-        # permission_classes=(permissions.IsAuthenticatedOrReadOnly,)
-         def create(self,request,*args,**kwargs):
-                 short=os.path.relpath(urlparse(self.request.build_absolute_uri()).path,'/')
-                 g=UrlEntry.objects.filter(short_url=short).values('origin_domain')
-                 print(short)
-                 response = super(EntryViewSet,self).create(request,*args,**kwargs)
-                 if g:
-                     return HttpResponseRedirect(redirect_to=g[0].get('origin_domain'))
-                 else:
-                     return HttpResponseRedirect(redirect_to='https:google.com')
-         def perform_create(self,serializer):       
-                 serializer.partial=True
-                 serializer.save( origin_ip=self.request.META.get('REMOTE_ADDR'))
+         lookup_field = 'short_url'
+        
         

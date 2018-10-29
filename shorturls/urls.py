@@ -26,6 +26,8 @@ print(base62.from_decimal(12345))
 
 urlpatterns = [
      path('admin/', admin.site.urls),
+    # path('A/<slug:title>/',  admin.site.urls),
+
      url(r'^', include(router.urls)),
      url(r'^api_auth/', include('rest_framework.urls',namespace='rest_framework'))
      # path('api_auth/', admin.site.urls),
