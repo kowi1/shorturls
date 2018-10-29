@@ -12,7 +12,7 @@ from shorturls.settings import domain
 from urllib.parse import urlparse
 import os
 
-from shorturls.serializer import GetShortUrlSerializer,FullEntrySerializer,GetFriendlyNameSerializer
+from shorturls.serializer import GetShortUrlSerializer,FullEntrySerializer,GetFriendlyNameSerializer,OriginUrlSerializer
 
      
 class GetShortUrlViewSet(viewsets.ModelViewSet):
@@ -22,7 +22,7 @@ class GetShortUrlViewSet(viewsets.ModelViewSet):
          def create(self,request):
                  queryset=UrlEntry.objects.create(origin_domain=self.request.POST.get('origin_domain'))
                  serializer = GetShortUrlSerializer(queryset,context={'request':request})
-                 g=UrlEntry.objects.filter(pk=queryset.pk).update(short_url=domain+base62.from_decimal(queryset.pk))
+                 g=UrlEntry.objects.filter(pk=queryset.pk).update(short_url=domain+base62.from_decimal(queryset.pk),friendly_name=base62.from_decimal(queryset.pk),friendly_key=queryset.pk)
                  queryset.refresh_from_db()
                  return Response(serializer.data)
                  
@@ -50,13 +50,15 @@ class GetFriendlyNameViewSet (viewsets.ModelViewSet):
                  #g=UrlEntry.objects.filter(friendly_name=short).values('friendly_name')
                 # print(g)
                  serializer.partial=True
-                 serializer.save( friendly_key=base62.to_decimal(self.request.POST.get('friendly_name')))
+                 serializer.save( friendly_key=base62.to_decimal(self.request.POST.get('friendly_name')),short_url=domain+self.request.POST.get('friendly_name'))
                  return Response(serializer.data)
 
 
-class EntryViewSet(viewsets.ModelViewSet):
-         queryset = UrlEntry.objects.all()
-         serializer_class=GetShortUrlSerializer
-         lookup_field = 'short_url'
+class OriginViewSet(viewsets.ModelViewSet):
+         queryset = UrlEntry.objects.none()
+         serializer_class=OriginUrlSerializer
+         lookup_field = 'friendly_name' 
+        
+         
         
         
