@@ -4,6 +4,17 @@ Shorturls
 This  application is written using the Django framework. Its functionality is accessed via REST API'S built with Django Restframework. 
 
 The project has also been updated for Django 2.1.2 .
+
+Installation.
+Requirements
+Python3
+Pip3
+Virtualenv
+Django 2.1.2
+Django_filter
+Djangorestframework
+
+
 Features
 --------
 
@@ -12,4 +23,4 @@ Features
 
 * Ability to create custom short URLs.
 
-* Keeps count of how many time each URL is followed.
+* 

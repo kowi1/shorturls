@@ -58,6 +58,7 @@ class OriginViewSet(viewsets.ModelViewSet):
          queryset = UrlEntry.objects.none()
          serializer_class=OriginUrlSerializer
          lookup_field = 'friendly_name' 
+         
         
          
         
