@@ -25,7 +25,7 @@ SECRET_KEY = 'ndl$-=fh3#ti8y_%beg0bv4m)p%h3uec!=q!21zx0x)8kox=(b'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-domain='http://127.0.0.1:8000/q/'
+domain='http://127.0.0.1:8000/rdr/'
 
 ALLOWED_HOSTS = []
 

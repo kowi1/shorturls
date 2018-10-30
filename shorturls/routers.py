@@ -10,7 +10,7 @@ class ApiDocumentView(routers.APIRootView):
                 Response:
                 {
                     "origin_domain": "http://127.0.0.1:8000/url67rrr/",
-                    "short_url": "http://127.0.0.1:8000/q/Cp"
+                    "short_url": "http://127.0.0.1:8000/rdr/Cp"
                 }
 
 
@@ -35,12 +35,14 @@ class ApiDocumentView(routers.APIRootView):
                 {
                         "id": 176,
                         "origin_domain": "http://127.0.0.1:8000/url5/",
-                        "short_url": "http://127.0.0.1:8000/q/KimKad",
+                        "short_url": "http://127.0.0.1:8000/rdr/KimKad",
                         "friendly_name": "KimKad",
                         "origin_ip": "",
                         "views": 0,
                         "friendly_key": 9822967559
                     }
+
+        The prefix 'rdr' can bechanged from the domain in settings.py             
     """""
 class DoumentedRouter(routers.DefaultRouter):
     APIRootView = ApiDocumentView

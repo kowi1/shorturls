@@ -8,7 +8,7 @@ friendlyname_validator=FriendValidator
 
 class UrlEntry(models.Model):
         #auto_increment_id=models.AutoField(primary_key=True,default=1,unique=True)
-        friendly_name= models.CharField(max_length=128,
+        friendly_name= models.CharField(max_length=10,
         help_text=_('Type in a friendly name you would like to use and we will check if it is available'),
         validators=[friendlyname_validator],
         error_messages={

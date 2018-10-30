@@ -40,7 +40,7 @@ class ViewUrlViewSet (viewsets.ViewSet):
      
 
 class GetFriendlyNameViewSet (viewsets.ModelViewSet):
-         queryset = UrlEntry.objects.all()
+         queryset = UrlEntry.objects.none()
          serializer_class=GetFriendlyNameSerializer
          lookup_field = 'friendly_key'
          
