@@ -45,19 +45,26 @@ class GetFriendlyNameViewSet (viewsets.ModelViewSet):
          lookup_field = 'friendly_key'
          
          def perform_create(self,serializer):
-                # short=self.request.POST.get('friendly_name')
-                 #print(short)
-                 #g=UrlEntry.objects.filter(friendly_name=short).values('friendly_name')
-                # print(g)
+                 queryset = UrlEntry.objects.all()
                  serializer.partial=True
                  serializer.save( friendly_key=base62.to_decimal(self.request.POST.get('friendly_name')),short_url=domain+self.request.POST.get('friendly_name'))
                  return Response(serializer.data)
 
 
-class OriginViewSet(viewsets.ModelViewSet):
-         queryset = UrlEntry.objects.none()
-         serializer_class=OriginUrlSerializer
-         lookup_field = 'friendly_name' 
+class OriginViewSet(viewsets.ViewSet):
+         lookup_url_kwarg = 'friendly_name'    
+         def retrieve(self,request,*args, **kwargs):
+                 queryset = UrlEntry.objects.all()
+                 user = get_object_or_404(queryset,friendly_name = kwargs['friendly_name'] )
+                 serializer = OriginUrlSerializer(user,context={'request':request})
+                 g=UrlEntry.objects.filter(pk=user.pk).update(origin_ip=self.request.META.get('REMOTE_ADDR'),views=UrlEntry.objects.get(pk=user.pk).views+1)
+                 return HttpResponseRedirect(redirect_to=user.origin_domain)
+
+         
+
+         
+
+
          
         
          
