@@ -2,49 +2,46 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from shorturls.models import UrlEntry
 
-
-        
-
 class RedirectUrlSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
          model = UrlEntry
-         fields =('origin_domain','short_url','friendly_name')
+         fields =('OriginDomain','ShortUrl','FriendlyName')
 
          
          
 class FullEntrySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
          model = UrlEntry
-         fields =('id','origin_domain','short_url','friendly_name','origin_ip','views','friendly_key')
+         fields =('id','OriginDomain','ShortUrl','FriendlyName','OriginIp','Views','FriendlyKey')
 
 
 class GetShortUrlSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
          model = UrlEntry
-         fields =('origin_domain','friendly_name','short_url')
-         read_only_fields=('short_url',)
-         lookup_field='friendly_name'
+         fields =('OriginDomain','FriendlyName','ShortUrl')
+         read_only_fields=('ShortUrl','FriendlyName')
+         lookup_field='FriendlyName'
          extra_kwargs={
-             'url':{'lookup_field':'friendly_name'}
+             'url':{'lookup_field':'FriendlyName'}
          }
 
 
 class GetFriendlyNameSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
          model = UrlEntry
-         fields =('origin_domain','short_url','friendly_name') 
-         read_only_fields=('short_url',)
-         lookup_field='friendly_key'
+         fields =('OriginDomain','ShortUrl','FriendlyName') 
+         read_only_fields=('ShortUrl',)
+         lookup_field='FriendlyKey'
          extra_kwargs={
-             'url':{'lookup_field':'friendly_key'}
+             'url':{'lookup_field':'FriendlyKey'}
          }
 
 class OriginUrlSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
          model = UrlEntry
-         read_only_fields=('origin_domain',)
-         fields =('origin_domain',)
-         lookup_field='friendly_name'
+         read_only_fields=('OriginDomain',)
+         fields =('OriginDomain',)
+         lookup_field='FriendlyName'
          extra_kwargs={
-             'url':{'lookup_field':'friendly_name'}
+             'url':{'lookup_field':'FriendlyName'}
          }

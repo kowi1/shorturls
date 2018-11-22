@@ -20,9 +20,9 @@ class GetShortUrlViewSet(viewsets.ModelViewSet):
          serializer_class=GetShortUrlSerializer
         
          def create(self,request):
-                 queryset=UrlEntry.objects.create(origin_domain=self.request.POST.get('origin_domain'))
+                 queryset=UrlEntry.objects.create(OriginDomain=self.request.POST.get('OriginDomain'))
                  serializer = GetShortUrlSerializer(queryset,context={'request':request})
-                 g=UrlEntry.objects.filter(pk=queryset.pk).update(short_url=domain+base62.from_decimal(queryset.pk),friendly_name=base62.from_decimal(queryset.pk),friendly_key=queryset.pk)
+                 g=UrlEntry.objects.filter(pk=queryset.pk).update(ShortUrl=domain+base62.from_decimal(queryset.pk),FriendlyName=base62.from_decimal(queryset.pk),FriendlyKey=queryset.pk)
                  queryset.refresh_from_db()
                  return Response(serializer.data)
                  
@@ -42,31 +42,20 @@ class ViewUrlViewSet (viewsets.ViewSet):
 class GetFriendlyNameViewSet (viewsets.ModelViewSet):
          queryset = UrlEntry.objects.none()
          serializer_class=GetFriendlyNameSerializer
-         lookup_field = 'friendly_key'
+         lookup_field = 'FriendlyKey'
          
          def perform_create(self,serializer):
                  queryset = UrlEntry.objects.all()
                  serializer.partial=True
-                 serializer.save( friendly_key=base62.to_decimal(self.request.POST.get('friendly_name')),short_url=domain+self.request.POST.get('friendly_name'))
+                 serializer.save( FriendlyKey=base62.to_decimal(self.request.POST.get('FriendlyName')),ShortUrl=domain+self.request.POST.get('FriendlyName'))
                  return Response(serializer.data)
 
 
 class OriginViewSet(viewsets.ViewSet):
-         lookup_url_kwarg = 'friendly_name'    
+         lookup_url_kwarg = 'FriendlyName'    
          def retrieve(self,request,*args, **kwargs):
                  queryset = UrlEntry.objects.all()
-                 user = get_object_or_404(queryset,friendly_name = kwargs['friendly_name'] )
+                 user = get_object_or_404(queryset,FriendlyName = kwargs['FriendlyName'] )
                  serializer = OriginUrlSerializer(user,context={'request':request})
-                 g=UrlEntry.objects.filter(pk=user.pk).update(origin_ip=self.request.META.get('REMOTE_ADDR'),views=UrlEntry.objects.get(pk=user.pk).views+1)
-                 return HttpResponseRedirect(redirect_to=user.origin_domain)
-
-         
-
-         
-
-
-         
-        
-         
-        
-        
+                 g=UrlEntry.objects.filter(pk=user.pk).update(OriginIp=self.request.META.get('REMOTE_ADDR'),Views=UrlEntry.objects.get(pk=user.pk).Views+1)
+                 return HttpResponseRedirect(redirect_to=user.OriginDomain)
