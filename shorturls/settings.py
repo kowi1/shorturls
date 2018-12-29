@@ -25,7 +25,7 @@ SECRET_KEY = 'ndl$-=fh3#ti8y_%beg0bv4m)p%h3uec!=q!21zx0x)8kox=(b'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-domain='http://127.0.0.1:8000/r/'
+domain='http://shortenerapp.herokuapp.com/r/'
 
 ALLOWED_HOSTS = []
 
@@ -122,3 +122,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT== '/var/www/shortenerapp.herokuapp.com/static'
+
+STATICFILES_DIRS = (
+    '/var/www/shortenerapp.herokuapp.com/static/',
+)
