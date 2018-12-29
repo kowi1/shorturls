@@ -123,7 +123,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT== '/var/www/shortenerapp.herokuapp.com/static'
+STATIC_ROOT = '/var/www/shortenerapp.herokuapp.com/static'
 
 STATICFILES_DIRS = (
     '/var/www/shortenerapp.herokuapp.com/static/',
